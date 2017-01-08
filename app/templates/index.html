@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>Go CD Status -- gomon</title>
+  </head>
+  <body>
+      <h1>Hello!</h1>
+        <div class="pipeline">
+        {% for pipeline in unreleased %}
+            <h2>{{ pipeline.name }}</h2>
+            <div class="stages">
+                {% for stage in pipeline.runs[0] %}
+                    <div title="{{stage.name}}" class="stage"></div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        </div>
+  </body>
+</html>

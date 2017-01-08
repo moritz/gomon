@@ -1,12 +1,15 @@
 import os
 import json
 from gocd import Server
-from pprint import pprint
 from datetime import datetime
 
+from gomon.config import config
 
-def fetch_data(url='http://localhost:8153', **kwargs):
-    server = Server(url, **kwargs)
+
+def fetch_data():
+    c = config()['goserver']
+    url = c.pop('url')
+    server = Server(url, **c)
     groups = server.pipeline_groups()
     groups.get_pipeline_groups()
 
@@ -43,14 +46,13 @@ def fetch_data(url='http://localhost:8153', **kwargs):
                     break
             offset += 10
 
-        r_pipeline[name] = runs
+        r_pipeline[name] = { 'name': name, 'runs': runs }
         
     return r_pipeline
 
 destination = 'data/current.json'
 filename = '%s.json' % datetime.now().isoformat()
 data = fetch_data()
-pprint(data)
 print(filename)
 with open('data/' + filename, 'w') as fh:
     json.dump(data, fh)

@@ -1,6 +1,10 @@
 from pprint import pprint
 import json
 
+def map_results(results):
+    if len(results) == 1:
+        return results[0].lower()
+    return 'mixed'
 
 class PipelineCollection:
     def __init__(self, pipelines):
@@ -45,8 +49,14 @@ def successfull_incomplete_runs(runs):
                 break
     return count
 
+def deep_map_results(runs):
+    for run in runs:
+        for stage in run:
+            stage['result'] = map_results(stage['results']) 
+
 def enrich(pipeline):
     runs = pipeline['runs']
+    deep_map_results(runs)
     pipeline.update({
         'last_timestamp': last_timestamp(runs),
         'last_timestamp_completed': last_timestamp_completed(runs),

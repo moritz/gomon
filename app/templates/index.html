@@ -1,6 +1,6 @@
 {% macro render_pipeline(pipeline, last_completed=0) %}
     <div class="pipeline">
-        <h2>{{ pipeline.name }}</h2>
+        <h2><a href="{{base_url}}go/tab/pipeline/history/{{pipeline.name}}">{{ pipeline.name }}</a></h2>
         {% if last_completed %}
             <p>{{ pipeline.successfull_incomplete_runs }} run(s), {{ pipeline.last_completed }} since completion</p>
         {% endif %}

@@ -1,3 +1,4 @@
+from gomon.config import config
 from gomon.model import read_data
 from app import app
 from flask import render_template, send_from_directory
@@ -9,6 +10,7 @@ def index():
     return render_template('index.html',
                 unreleased=model.unreleased[:8],
                 failed=model.failed[:8],
+                base_url=config()['goserver']['url'],
     )
 
 #@app.route('/static/<path:path>')

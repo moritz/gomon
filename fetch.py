@@ -19,6 +19,7 @@ def fetch_data():
         runs = []
 
         pipeline = server.pipeline(name)
+        status = pipeline.status().payload
         
         offset = 0
         keep_going = True
@@ -46,7 +47,7 @@ def fetch_data():
                     break
             offset += 10
 
-        r_pipeline[name] = { 'name': name, 'runs': runs }
+        r_pipeline[name] = { 'name': name, 'runs': runs, 'paused': status['paused'], }
         
     return r_pipeline
 

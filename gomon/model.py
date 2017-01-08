@@ -19,7 +19,7 @@ class PipelineCollection:
     def _filter_unreleased(self):
         unreleased = [ p for p in self.pipelines.values() if p['successfull_incomplete_runs'] ]
         now = int(datetime.now().timestamp()) * 1000
-        unreleased.sort(key=lambda p: (p['last_timestamp'] - (p['last_timestamp_completed'] or 0)) * p['successfull_incomplete_runs'])
+        unreleased.sort(key=lambda p: (-p['successfull_incomplete_runs'], -(p['last_timestamp'] - (p['last_timestamp_completed'] or 0))))
         return unreleased
 
     def _filter_failed(self):

@@ -2,7 +2,7 @@
     <div class="pipeline">
         <h2>{{ pipeline.name }}</h2>
         {% if last_completed %}
-            <p>{{ pipeline.last_completed }}, {{ pipeline.successfull_incomplete_runs }} run(s) since completion</p>
+            <p>{{ pipeline.successfull_incomplete_runs }} run(s), {{ pipeline.last_completed }} since completion</p>
         {% endif %}
         <div class="stages">
             {% for stage in pipeline.runs[0] %}

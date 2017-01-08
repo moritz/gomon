@@ -1,5 +1,9 @@
 from pprint import pprint
+from datetime import datetime
+import humanize
 import json
+
+now = datetime.now()
 
 def map_results(results):
     if len(results) == 1:
@@ -10,11 +14,17 @@ class PipelineCollection:
     def __init__(self, pipelines):
         self.pipelines = pipelines
         self.unreleased = self._filter_unreleased()
+        self.failed = self._filter_failed()
 
     def _filter_unreleased(self):
         unreleased = [ p for p in self.pipelines.values() if p['successfull_incomplete_runs'] ]
-        unreleased.sort(key=lambda p: - (p['last_timestamp_completed'] - p['last_timestamp']) * p['successfull_incomplete_runs'])
+        now = int(datetime.now().timestamp()) * 1000
+        unreleased.sort(key=lambda p: (p['last_timestamp'] - (p['last_timestamp_completed'] or 0)) * p['successfull_incomplete_runs'])
         return unreleased
+
+    def _filter_failed(self):
+        failed = [ p for p in self.pipelines.values() if p['result'] == 'failed' ]
+        return failed
 
 def last_timestamp(runs):
     time = 0
@@ -32,6 +42,16 @@ def last_timestamp_completed(runs):
     for run in runs:
         if ','.join(run[-1]['results']) == 'Passed':
             return run[-1]['time']
+
+def pipeline_result(stages):
+    for stage in reversed(stages):
+        if stage['results'] == ['notyet']:
+            pass
+        elif stage['results'] == ['Passed']:
+            return 'Passed'
+        else:
+            return map_results(stage['results'])
+    return 'notyet'
 
 def successfull_incomplete_runs(runs):
     count = 0
@@ -54,6 +74,8 @@ def deep_map_results(runs):
         for stage in run:
             stage['result'] = map_results(stage['results']) 
 
+
+
 def enrich(pipeline):
     runs = pipeline['runs']
     deep_map_results(runs)
@@ -61,7 +83,15 @@ def enrich(pipeline):
         'last_timestamp': last_timestamp(runs),
         'last_timestamp_completed': last_timestamp_completed(runs),
         'successfull_incomplete_runs': successfull_incomplete_runs(runs),
+        'result': pipeline_result(runs[0]),
     })
+    if pipeline['last_timestamp_completed']:
+        delta = now - datetime.fromtimestamp(int(pipeline['last_timestamp_completed'] / 1000))
+        label = humanize.naturaltime(delta)
+    else:
+        label = 'never'
+    pipeline['last_completed'] = label
+        
     return pipeline
 
 

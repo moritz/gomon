@@ -1,0 +1,29 @@
+.pipeline {
+    border: 1px dashed;
+    width: 15em;
+    padding: 1ex;
+    margin: 1ex;
+    display: inline-block;
+}
+
+.pipeline h2 {
+    font-size: 120%;
+}
+
+.stage {
+    width: 2em;
+    height: 1em;
+    display: inline-block;
+}
+
+.stage {
+    background-color: red;
+}
+
+.stage-result-passed {
+    background-color: green !important;
+}
+.stage-result-notyet  {
+    background-color: grey !important;
+
+}

@@ -1,18 +1,34 @@
+{% macro render_pipeline(pipeline, last_completed=0) %}
+    <div class="pipeline">
+        <h2>{{ pipeline.name }}</h2>
+        {% if last_completed %}
+            <p>{{ pipeline.last_completed }}, {{ pipeline.successfull_incomplete_runs }} run(s) since completion</p>
+        {% endif %}
+        <div class="stages">
+            {% for stage in pipeline.runs[0] %}
+                <div title="{{stage.name}}" class="stage stage-result-{{stage.result}}"></div>
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
 <html>
   <head>
     <title>Go CD Status -- gomon</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css" />
   </head>
   <body>
-      <h1>Hello!</h1>
-        <div class="pipeline">
-        {% for pipeline in unreleased %}
-            <h2>{{ pipeline.name }}</h2>
-            <div class="stages">
-                {% for stage in pipeline.runs[0] %}
-                    <div title="{{stage.name}}" class="stage">{{ stage.name}}: {{ stage.result}}</div>
-                {% endfor %}
-            </div>
-        {% endfor %}
-        </div>
+      <h1>Unreleased Pipelines</h1>
+       <div class="pipeline-group">
+       {% for pipeline in unreleased %}
+           {{ render_pipeline(pipeline, 1) }}
+       {% endfor %}
+       </div>
+
+      <h1>Failed Pipelines</h1>
+       <div class="pipeline-group">
+       {% for pipeline in failed %}
+           {{ render_pipeline(pipeline) }}
+       {% endfor %}
+       </div>
   </body>
 </html>

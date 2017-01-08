@@ -11,24 +11,31 @@
         </div>
     </div>
 {% endmacro %}
+
+{% macro render_pipeline_group(pipelines, last_completed=0) %}
+<div class="pipeline-group">
+{% for pipeline in pipelines %}
+    {{ render_pipeline(pipeline, last_completed) }}
+{% endfor %}
+{% if not pipelines %}
+<p class="pipeline-group-empty">(none)</p>
+{% endif %}
+</div>
+{% endmacro %}
+
 <html>
   <head>
     <title>Go CD Status -- gomon</title>
     <link rel="stylesheet" type="text/css" href="/static/style.css" />
   </head>
   <body>
-      <h1>Unreleased Pipelines</h1>
-       <div class="pipeline-group">
-       {% for pipeline in unreleased %}
-           {{ render_pipeline(pipeline, 1) }}
-       {% endfor %}
-       </div>
+      <h1 id="unreleased">Unreleased Pipelines</h1>
+       {{ render_pipeline_group(unreleased, 1) }}
 
-      <h1>Failed Pipelines</h1>
-       <div class="pipeline-group">
-       {% for pipeline in failed %}
-           {{ render_pipeline(pipeline) }}
-       {% endfor %}
-       </div>
+      <h1 id="failed">Failed Pipelines</h1>
+       {{ render_pipeline_group(failed, 0) }}
+
+       <h1 id="paused">Paused Pipelines</h1>
+       {{ render_pipeline_group(paused, 0) }}
   </body>
 </html>

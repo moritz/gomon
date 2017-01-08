@@ -10,6 +10,7 @@ def index():
     return render_template('index.html',
                 unreleased=model.unreleased[:8],
                 failed=model.failed[:8],
+                paused=model.paused[:8],
                 base_url=config()['goserver']['url'],
     )
 

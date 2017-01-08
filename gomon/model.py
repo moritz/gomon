@@ -15,15 +15,16 @@ class PipelineCollection:
         self.pipelines = pipelines
         self.unreleased = self._filter_unreleased()
         self.failed = self._filter_failed()
+        self.paused = [ p for p in self.pipelines.values() if p['paused'] ]
 
     def _filter_unreleased(self):
-        unreleased = [ p for p in self.pipelines.values() if p['successfull_incomplete_runs'] ]
+        unreleased = [ p for p in self.pipelines.values() if p['successfull_incomplete_runs'] and not p['paused'] ]
         now = int(datetime.now().timestamp()) * 1000
         unreleased.sort(key=lambda p: (-p['successfull_incomplete_runs'], -(p['last_timestamp'] - (p['last_timestamp_completed'] or 0))))
         return unreleased
 
     def _filter_failed(self):
-        failed = [ p for p in self.pipelines.values() if p['result'] == 'failed' ]
+        failed = [ p for p in self.pipelines.values() if p['result'] == 'failed' and not p['paused'] ]
         return failed
 
 def last_timestamp(runs):

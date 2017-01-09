@@ -9,7 +9,7 @@ SyslogIdentifier=gomon
 User=nobody
 WorkingDirectory=/var/lib/gomon/
 Environment='GOMON_CONFIG_FILE=/etc/gomon.ini'
-ExecStart=/usr/share/python-custom/gomon/bin/gunicorn --bind 0.0.0.0:80 gomon.wsgi:app
+ExecStart=/usr/share/python-custom/gomon/bin/gunicorn --bind 0.0.0.0:8180 gomon.wsgi:app
 
 PrivateTmp=yes
 InaccessibleDirectories=/home

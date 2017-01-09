@@ -57,9 +57,9 @@ data = fetch_data()
 print(filename)
 with open('data/' + filename, 'w') as fh:
     json.dump(data, fh)
-try:
-    os.remove(destination)
-except FileNotFoundError:
-    pass
-
-os.symlink(filename, destination)
+# try:
+#     os.remove(destination)
+# except FileNotFoundError:
+#     pass
+# 
+# os.symlink(filename, destination)

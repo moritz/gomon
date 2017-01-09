@@ -1,6 +1,6 @@
 from gomon.config import config
 from gomon.model import read_data
-from app import app
+from gomon import app
 from flask import render_template, send_from_directory
 
 @app.route('/')
@@ -13,7 +13,3 @@ def index():
                 paused=model.paused[:8],
                 base_url=config()['goserver']['url'],
     )
-
-#@app.route('/static/<path:path>')
-#def handle_static(path):
-#    return send_from_directory('static', path)

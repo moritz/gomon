@@ -10,4 +10,5 @@ setup(name='gomon',
       packages=['gomon'],
       package_data={'gomon': ['static/*', 'templates/*.html']},
       requires=['flask', 'gunicorn', 'gocd', 'humanize'],
+      scripts=['fetch.py'],
      )

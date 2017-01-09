@@ -55,12 +55,18 @@ def fetch_data():
 destination = 'data/current.json'
 filename = '%s.json' % datetime.now().isoformat()
 data = fetch_data()
-print(filename)
+
+old_file = None
 with open('data/' + filename, 'w') as fh:
     json.dump(data, fh)
+
 try:
+    old_file = os.readlink(destination)
     os.remove(destination)
 except FileNotFoundError:
     pass
 
 os.symlink(filename, destination)
+
+if old_file:
+    os.remove('data/' + old_file)

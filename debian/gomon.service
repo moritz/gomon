@@ -1,0 +1,17 @@
+[Unit]
+Description=GoCD Build Dashboard
+Requires=network.target
+After=network.target
+
+[Service]
+Type=simple
+SyslogIdentifier=gomon
+User=nobody
+ExecStart=/usr/share/python-custom/gomon/bin/gunicorn --bind 0.0.0.0:80 gomon.wsgi:app
+
+PrivateTmp=yes
+InaccessibleDirectories=/home
+ReadOnlyDirectories=/bin /sbin /usr /lib /etc
+
+[Install]
+WantedBy=multi-user.target

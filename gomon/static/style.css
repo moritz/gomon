@@ -18,12 +18,14 @@
 
 .stage {
     background-color: red;
+    background: linear-gradient(to bottom, #ff5050, red);
 }
 
 .stage-result-passed {
-    background-color: green !important;
+    background-color: green;
+    background: linear-gradient(to bottom, #8fc800, green);
 }
 .stage-result-notyet  {
-    background-color: grey !important;
-
+    background-color: grey;
+    background: linear-gradient(to bottom, #8f8f8f, grey);
 }

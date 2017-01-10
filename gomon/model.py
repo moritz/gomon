@@ -2,6 +2,7 @@ from pprint import pprint
 from datetime import datetime
 import humanize
 import json
+import os
 
 now = datetime.now()
 
@@ -11,7 +12,8 @@ def map_results(results):
     return 'mixed'
 
 class PipelineCollection:
-    def __init__(self, pipelines):
+    def __init__(self, pipelines, last_updated):
+        self.last_updated = last_updated
         self.pipelines = pipelines
         self.unreleased = self._filter_unreleased()
         self.failed = self._filter_failed()
@@ -99,6 +101,8 @@ def enrich(pipeline):
 def read_data():
     with open('data/current.json') as fh:
         data = json.load(fh)
+    original = os.readlink('data/current.json')
+    last_updated = original[:-5]
 
     data = { name: enrich(p) for name, p in data.items() }
-    return PipelineCollection(pipelines=data)
+    return PipelineCollection(pipelines=data, last_updated=last_updated)

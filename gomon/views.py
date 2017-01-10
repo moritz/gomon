@@ -8,6 +8,7 @@ from flask import render_template, send_from_directory
 def index():
     model = read_data()
     return render_template('index.html',
+                last_updated=model.last_updated,
                 unreleased=model.unreleased[:8],
                 failed=model.failed[:8],
                 paused=model.paused[:8],

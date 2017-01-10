@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+test $DEBIAN_SCRIPT_DEBUG && set -v -x
+
+export PATH=$PATH:/sbin:/usr/sbin:/bin:/usr/bin
+
+USER="gomon"
+
+case "$1" in
+    configure)
+        if ! getent passwd $USER >/dev/null ; then
+            adduser --system $USER --no-create-home --home /var/lib/gomon
+        fi
+        chown -R $USER /var/lib/gomon
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

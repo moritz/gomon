@@ -1,1 +1,2 @@
 etc/gomon.ini
+etc/cron.d/gomon

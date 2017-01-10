@@ -7,5 +7,5 @@ Standards-Version: 3.9.6
 
 Package: gomon
 Architecture: all
-Depends: python3 (>= 3.4)
+Depends: python3 (>= 3.4), adduser
 Description: Build status dashboard for Go Continuous Delivery

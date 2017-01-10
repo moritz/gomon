@@ -1,0 +1,1 @@
+*/5 * * * * gomon cd /var/lib/gomon && GOMON_CONFIG_FILE=/etc/gomon.ini /usr/share/python-custom/gomon/bin/fetch.py
